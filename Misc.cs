@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace dotSwitcher
 {
@@ -17,7 +14,7 @@ namespace dotSwitcher
     }
 
     [Flags()]
-    public enum KeyDataFlags : int
+    public enum KeyDataFlags
     {
         LLKHF_EXTENDED = 0x01,
         LLKHF_INJECTED = 0x10,
@@ -44,11 +41,46 @@ namespace dotSwitcher
 
     public class DummyHookEventData : HookEventData
     {
-        public new KeyData KeyData { get { WrongUsage(); return new KeyData(); } private set { } }
-        public new bool CtrlIsPressed { get { WrongUsage(); return false; } private set { } }
-        public new bool AltIsPressed { get { WrongUsage(); return false; } private set { } }
-        public new bool ShiftIsPressed { get { WrongUsage(); return false; } private set { } }
-        public DummyHookEventData() : base(new KeyData(), false, false, false) { }
+        public new KeyData KeyData
+        {
+            get
+            {
+                WrongUsage();
+                return new KeyData();
+            }
+        }
+
+        public new bool CtrlIsPressed
+        {
+            get
+            {
+                WrongUsage();
+                return false;
+            }
+        }
+
+        public new bool AltIsPressed
+        {
+            get
+            {
+                WrongUsage();
+                return false;
+            }
+        }
+
+        public new bool ShiftIsPressed
+        {
+            get
+            {
+                WrongUsage();
+                return false;
+            }
+        }
+
+        public DummyHookEventData() : base(new KeyData(), false, false, false)
+        {
+        }
+
         public void WrongUsage()
         {
             throw new NotImplementedException("This is a DummyHookEventData");
@@ -58,29 +90,30 @@ namespace dotSwitcher
     public class HookId
     {
         public IntPtr HookResult { get; set; }
-        public static HookId Empty = new HookId { HookResult = IntPtr.Zero };
-        public bool IsEmpty() { return HookResult == IntPtr.Zero; }
+        public static HookId Empty = new HookId {HookResult = IntPtr.Zero};
+
+        public bool IsEmpty()
+        {
+            return HookResult == IntPtr.Zero;
+        }
     }
 
-    struct INPUT
+    internal struct INPUT
     {
         public UInt32 Type;
         public MOUSEKEYBDHARDWAREINPUT Data;
     }
 
     [StructLayout(LayoutKind.Explicit)]
-    struct MOUSEKEYBDHARDWAREINPUT
+    internal struct MOUSEKEYBDHARDWAREINPUT
     {
-        [FieldOffset(0)]
-        public MOUSEINPUT Mouse;
-        [FieldOffset(0)]
-        public KEYBDINPUT Keyboard;
-        [FieldOffset(0)]
-        public HARDWAREINPUT Hardware;
+        [FieldOffset(0)] public MOUSEINPUT Mouse;
+        [FieldOffset(0)] public KEYBDINPUT Keyboard;
+        [FieldOffset(0)] public HARDWAREINPUT Hardware;
     }
 
-    #pragma warning disable 649
-    struct MOUSEINPUT
+#pragma warning disable 649
+    internal struct MOUSEINPUT
     {
         public Int32 X;
         public Int32 Y;
@@ -90,7 +123,7 @@ namespace dotSwitcher
         public IntPtr ExtraInfo;
     }
 
-    struct KEYBDINPUT
+    internal struct KEYBDINPUT
     {
         public UInt16 Vk;
         public UInt16 Scan;
@@ -99,12 +132,12 @@ namespace dotSwitcher
         public IntPtr ExtraInfo;
     }
 
-    struct HARDWAREINPUT
+    internal struct HARDWAREINPUT
     {
         public UInt32 Msg;
         public UInt16 ParamL;
         public UInt16 ParamH;
     }
-    #pragma warning restore 649
+#pragma warning restore 649
 
 }

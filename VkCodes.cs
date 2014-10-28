@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace dotSwitcher
 {
     public static class VirtualKeyStates
@@ -28,7 +24,7 @@ namespace dotSwitcher
         public const int VK_CAPITAL = 0x14;
         //
         public const int VK_KANA = 0x15;
-        public const int VK_HANGEUL = 0x15; 
+        public const int VK_HANGEUL = 0x15;
         public const int VK_HANGUL = 0x15;
         public const int VK_JUNJA = 0x17;
         public const int VK_FINAL = 0x18;
@@ -109,13 +105,13 @@ namespace dotSwitcher
         public const int VK_NUMLOCK = 0x90;
         public const int VK_SCROLL = 0x91;
         //
-        public const int VK_OEM_NEC_EQUAL = 0x92;   // '=' key on numpad
+        public const int VK_OEM_NEC_EQUAL = 0x92; // '=' key on numpad
         //
-        public const int VK_OEM_FJ_JISHO = 0x92;   // 'Dictionary' key
-        public const int VK_OEM_FJ_MASSHOU = 0x93;   // 'Unregister word' key
-        public const int VK_OEM_FJ_TOUROKU = 0x94;   // 'Register word' key
-        public const int VK_OEM_FJ_LOYA = 0x95;   // 'Left OYAYUBI' key
-        public const int VK_OEM_FJ_ROYA = 0x96;   // 'Right OYAYUBI' key
+        public const int VK_OEM_FJ_JISHO = 0x92; // 'Dictionary' key
+        public const int VK_OEM_FJ_MASSHOU = 0x93; // 'Unregister word' key
+        public const int VK_OEM_FJ_TOUROKU = 0x94; // 'Register word' key
+        public const int VK_OEM_FJ_LOYA = 0x95; // 'Left OYAYUBI' key
+        public const int VK_OEM_FJ_ROYA = 0x96; // 'Right OYAYUBI' key
         //
         public const int VK_LSHIFT = 0xA0;
         public const int VK_RSHIFT = 0xA1;
@@ -144,24 +140,24 @@ namespace dotSwitcher
         public const int VK_LAUNCH_APP1 = 0xB6;
         public const int VK_LAUNCH_APP2 = 0xB7;
         //
-        public const int VK_OEM_1 = 0xBA;   // ';:' for US
-        public const int VK_OEM_PLUS = 0xBB;   // '+' any country
-        public const int VK_OEM_COMMA = 0xBC;   // ',' any country
-        public const int VK_OEM_MINUS = 0xBD;   // '-' any country
-        public const int VK_OEM_PERIOD = 0xBE;   // '.' any country
-        public const int VK_OEM_2 = 0xBF;   // '/?' for US
-        public const int VK_OEM_3 = 0xC0;   // '`~' for US
+        public const int VK_OEM_1 = 0xBA; // ';:' for US
+        public const int VK_OEM_PLUS = 0xBB; // '+' any country
+        public const int VK_OEM_COMMA = 0xBC; // ',' any country
+        public const int VK_OEM_MINUS = 0xBD; // '-' any country
+        public const int VK_OEM_PERIOD = 0xBE; // '.' any country
+        public const int VK_OEM_2 = 0xBF; // '/?' for US
+        public const int VK_OEM_3 = 0xC0; // '`~' for US
         //
-        public const int VK_OEM_4 = 0xDB;  //  '[{' for US
-        public const int VK_OEM_5 = 0xDC;  //  '\|' for US
-        public const int VK_OEM_6 = 0xDD;  //  ']}' for US
-        public const int VK_OEM_7 = 0xDE;  //  ''"' for US
+        public const int VK_OEM_4 = 0xDB; //  '[{' for US
+        public const int VK_OEM_5 = 0xDC; //  '\|' for US
+        public const int VK_OEM_6 = 0xDD; //  ']}' for US
+        public const int VK_OEM_7 = 0xDE; //  ''"' for US
         public const int VK_OEM_8 = 0xDF;
         //
-        public const int VK_OEM_AX = 0xE1;  //  'AX' key on Japanese AX kbd
-        public const int VK_OEM_102 = 0xE2;  //  "<>" or "\|" on RT 102-key kbd.
-        public const int VK_ICO_HELP = 0xE3;  //  Help key on ICO
-        public const int VK_ICO_00 = 0xE4;  //  00 key on ICO
+        public const int VK_OEM_AX = 0xE1; //  'AX' key on Japanese AX kbd
+        public const int VK_OEM_102 = 0xE2; //  "<>" or "\|" on RT 102-key kbd.
+        public const int VK_ICO_HELP = 0xE3; //  Help key on ICO
+        public const int VK_ICO_00 = 0xE4; //  00 key on ICO
         //
         public const int VK_PROCESSKEY = 0xE5;
         //
@@ -195,13 +191,24 @@ namespace dotSwitcher
 
         public static bool IsPrintable(HookEventData evtData)
         {
-            if (evtData.AltIsPressed || evtData.CtrlIsPressed) { return false; }
+            if (evtData.AltIsPressed || evtData.CtrlIsPressed)
+            {
+                return false;
+            }
             var vkCode = evtData.KeyData.vkCode;
-            if (vkCode >= 0x30 && vkCode <= 0x5A) { return true; }
-            if (vkCode >= VK_OEM_1 && vkCode <= VK_OEM_3) { return true; }
-            if (vkCode == VK_OEM_102 || vkCode == VK_ICO_00) { return true; }
-            if (vkCode >= VK_OEM_4 && vkCode <= VK_OEM_8) { return true; }
-            return false;
+            if (vkCode >= 0x30 && vkCode <= 0x5A)
+            {
+                return true;
+            }
+            if (vkCode >= VK_OEM_1 && vkCode <= VK_OEM_3)
+            {
+                return true;
+            }
+            if (vkCode == VK_OEM_102 || vkCode == VK_ICO_00)
+            {
+                return true;
+            }
+            return vkCode >= VK_OEM_4 && vkCode <= VK_OEM_8;
         }
     }
 }

@@ -1,36 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using dotSwitcher.Properties;
 
 namespace dotSwitcher
 {
     public class SysTrayApp : Form
     {
-        private Switcher engine;
-        private NotifyIcon trayIcon;
-        private ContextMenu trayMenu;
-        private MenuItem power;
+        private readonly Switcher _engine;
+        private readonly NotifyIcon _trayIcon;
+        private readonly MenuItem _power;
 
         public SysTrayApp(Switcher engine)
         {
-            this.engine = engine;
-            trayMenu = new ContextMenu();
-            power = new MenuItem("", OnPower);
-            trayMenu.MenuItems.Add(power);
+            _engine = engine;
+            var trayMenu = new ContextMenu();
+            _power = new MenuItem("", OnPower);
+            trayMenu.MenuItems.Add(_power);
             trayMenu.MenuItems.Add("Exit", OnExit);
 
 
-            trayIcon = new NotifyIcon();
-            trayIcon.Text = "dotSwitcher";
-            trayIcon.Icon = Properties.Resources.icon;
-
-            trayIcon.ContextMenu = trayMenu;
-            trayIcon.Visible = true;
-
-            
+            _trayIcon = new NotifyIcon
+            {
+                Text = Resources.SysTrayApp_SysTrayApp_dotSwitcher,
+                Icon = Resources.icon,
+                ContextMenu = trayMenu,
+                Visible = true
+            };
         }
 
         protected override void OnLoad(EventArgs e)
@@ -38,44 +33,38 @@ namespace dotSwitcher
             Visible = false;
             ShowInTaskbar = false;
 
-            engine.Error += OnEngineError;
-            engine.Start();
+            _engine.Error += OnEngineError;
+            _engine.Start();
             UpdateMenu();
             base.OnLoad(e);
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
-            engine.Error -= OnEngineError;
+            _engine.Error -= OnEngineError;
             base.OnClosing(e);
         }
 
         private void OnEngineError(object sender, SwitcherErrorArgs args)
         {
             var ex = args.Error;
-            trayIcon.ShowBalloonTip(2000, "dotSwitcher error", ex.ToString(), ToolTipIcon.None);
+            _trayIcon.ShowBalloonTip(2000, "dotSwitcher error", ex.ToString(), ToolTipIcon.None);
         }
 
-        private void OnExit(object sender, EventArgs e)
+        private static void OnExit(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
         private void UpdateMenu()
         {
-            if (engine.IsStarted())
-            {
-                power.Text = "Turn off";
-            }
-            else
-            {
-                power.Text = "Turn on";
-            }
+            _power.Text = _engine.IsStarted() ? "Turn off" : "Turn on";
         }
+
         private void OnPower(object sender, EventArgs e)
         {
-            if (engine.IsStarted()) { engine.Stop(); }
-            else { engine.Start(); }
+            if (_engine.IsStarted()) { _engine.Stop(); }
+            else { _engine.Start(); }
             UpdateMenu();
         }
 
@@ -83,7 +72,7 @@ namespace dotSwitcher
         {
             if (isDisposing)
             {
-                trayIcon.Dispose();
+                _trayIcon.Dispose();
             }
             base.Dispose(isDisposing);
         }
